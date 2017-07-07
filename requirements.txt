@@ -1,0 +1,3 @@
+requests
+configparser
+-e git+https://github.com/io-reyes/appcensus-dbops.git#egg=dbops
