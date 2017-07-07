@@ -3,7 +3,13 @@ import logging
 import argparse
 
 from configparser import ConfigParser
-from dbops import dbops
+
+_has_dbops = False
+try:
+    from dbops import dbops
+    _has_dbops = True
+except:
+    pass
 
 def _check_http_ok(url, timeout=30, \
                    user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:54.0) Gecko/20100101 Firefox/54.0'):
@@ -26,6 +32,9 @@ def check_url(url):
 
 _db_inited = False
 def init_db(db_host, db_database, db_user, db_pass):
+    global _has_dbops
+    assert _has_dbops, 'AppCensus dbops module not available'
+
     global _db_inited
 
     try:
@@ -39,6 +48,9 @@ def init_db(db_host, db_database, db_user, db_pass):
         logging.exception(e)
 
 def check_db_urls(db_update=True):
+    global _has_dbops
+    assert _has_dbops, 'AppCensus dbops module not available'
+
     global _db_inited
     assert _db_inited, 'Database connection not initialized, must run init_db() first'
 
